@@ -1,4 +1,4 @@
-# Overview
+# Yoda bot
 
 This is the documentation for how to set up and run the yoda bot. (`yoda.py`)
 

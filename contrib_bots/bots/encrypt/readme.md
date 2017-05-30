@@ -1,4 +1,5 @@
-About EncryptBot:
+# Encrypt bot
+
 EncryptBot Allows for quick ROT13 encryption in the middle of a chat.
 
 What It Does:

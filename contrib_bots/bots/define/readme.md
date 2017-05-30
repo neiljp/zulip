@@ -1,4 +1,4 @@
-# DefineBot
+# Define bot
 
 * This is a bot that defines a word that the user inputs. Whenever the user
 inputs a message starting with '@define', the bot defines the word

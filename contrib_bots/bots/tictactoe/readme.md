@@ -1,4 +1,4 @@
-# About Tic-Tac-Toe Bot
+# Tic-Tac-Toe bot
 
 This bot allows you to play tic-tac-toe in a private message with the bot.
 Multiple games can simultaneously be played by different users, each playing

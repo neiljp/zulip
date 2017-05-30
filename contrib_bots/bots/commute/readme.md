@@ -1,3 +1,5 @@
+# Commute bot
+
 This bot will allow briefings of estimated travel times, distances and
 fare information for transit travel.
 
@@ -8,8 +10,12 @@ It can output: fare information, more detailed addresses on origin and
 destination, duration in traffic information, metric and imperical
 units and information in various languages.
 
+## Usage
+
 The bot will respond to the same stream input was in. And if called as
 private message, the bot will reply with a private message.
+
+### Setup
 
 To setup the bot, you will first need to move commute.config into
 the user home directory and add an API key.
@@ -29,6 +35,8 @@ into
 To add an API key, please visit:
 https://developers.google.com/maps/documentation/distance-matrix/start
 to retrieve a key and copy your api key into commute.config
+
+### Usage examples
 
 Sample input and output:
 
@@ -60,13 +68,19 @@ Sample request:
     @commute origins=Chicago,IL,USA destinations=New+York,NY,USA language=fr
     </code></pre>
 
-Please note:
-    Fare information can be derived, though is solely dependent on the
-    availability of the information released by public transport operators.
-    Duration in traffic can only be derived if a departure time is set.
-    If a location has spaces in its name, please use a + symbol in the
-    place of the space/s.
-    A departure time and a arrival time can not be inputted at the same time
-    No spaces within addresses.
-    Departure times and arrival times must be in the UTC timezone,
-    you can use the timezone bot.
+## Notes
+
+* Fare information can be derived, though is solely dependent on the
+  availability of the information released by public transport operators.
+
+* Duration in traffic can only be derived if a departure time is set.
+
+* If a location has spaces in its name, please use a + symbol in the
+  place of the space/s.
+
+* A departure time and a arrival time can not be inputted at the same time
+
+* No spaces within addresses.
+
+* Departure times and arrival times must be in the UTC timezone,
+  you can use the timezone bot.
