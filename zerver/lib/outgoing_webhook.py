@@ -145,7 +145,7 @@ def fail_with_message(event: Dict[str, Any], failure_message: Text) -> None:
     failure_message = "Failure! " + failure_message
     send_response_message(event['user_profile_id'], event['message'], failure_message)
 
-def get_message_url(event: Dict[str, Any], request_data: Dict[str, Any]) -> Text:
+def get_message_url(event: Dict[str, Any], request_data: Optional[Dict[str, Any]]) -> Text:
     bot_user = get_user_profile_by_id(event['user_profile_id'])
     message = event['message']
     if message['type'] == 'stream':
@@ -165,7 +165,7 @@ def get_message_url(event: Dict[str, Any], request_data: Dict[str, Any]) -> Text
     return message_url
 
 def notify_bot_owner(event: Dict[str, Any],
-                     request_data: Dict[str, Any],
+                     request_data: Optional[Dict[str, Any]],
                      status_code: Optional[int]=None,
                      response_content: Optional[AnyStr]=None,
                      exception: Optional[Exception]=None) -> None:
@@ -187,7 +187,7 @@ def notify_bot_owner(event: Dict[str, Any],
     send_response_message(bot_id, message_info, notification_message)
 
 def request_retry(event: Dict[str, Any],
-                  request_data: Dict[str, Any],
+                  request_data: Optional[Dict[str, Any]],
                   failure_message: Text,
                   exception: Optional[Exception]=None) -> None:
     def failure_processor(event: Dict[str, Any]) -> None:
