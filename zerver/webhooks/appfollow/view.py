@@ -16,7 +16,11 @@ from zerver.models import UserProfile
 def api_appfollow_webhook(request: HttpRequest, user_profile: UserProfile,
                           payload: Dict[str, Any]=REQ(argument_type="body")) -> HttpResponse:
     message = payload["text"]
-    app_name = re.search('\A(.+)', message).group(0)
+    app_name_search= re.search('\A(.+)', message)
+    if app_name_search is None:
+        return json_error(_('Error: Could not find App name'))
+
+    app_name = app_name_search.group(0)
     topic = app_name
 
     check_send_webhook_message(request, user_profile, topic,
