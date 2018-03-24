@@ -81,6 +81,8 @@ class REQ:
         self.default = default
         self.argument_type = argument_type
 
+        self.func_var_type = None
+
         if converter and validator:
             # Not user-facing, so shouldn't be tagged for translation
             raise AssertionError('converter and validator are mutually exclusive')
@@ -114,11 +116,13 @@ def has_request_variables(view_func):
 
     post_params = []
 
+    print(view_func.__annotations__)
     for (name, value) in zip(default_param_names, default_param_values):
         if isinstance(value, REQ):
             value.func_var_name = name
             if value.post_var_name is None:
                 value.post_var_name = name
+            value.func_var_type = view_func.__annotations__.get(name)  # declared type of parameter
             post_params.append(value)
 
     @wraps(view_func)
@@ -163,6 +167,9 @@ def has_request_variables(view_func):
                     val = ujson.loads(val)
                 except Exception:
                     raise JsonableError(_('Argument "%s" is not valid JSON.') % (param.post_var_name,))
+
+                inferred_validator = param.func_var_type
+                print(param.validator, inferred_validator)
 
                 error = param.validator(param.post_var_name, val)
                 if error:
