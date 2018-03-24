@@ -103,13 +103,13 @@ class REQ:
 # internally when it encounters an error
 def has_request_variables(view_func):
     # type: (Callable[[HttpRequest, Any, Any], HttpResponse]) -> Callable[[HttpRequest, *Any, **Any], HttpResponse]
-    num_params = view_func.__code__.co_argcount
     if view_func.__defaults__ is None:
-        num_default_params = 0
         default_param_values = []
     else:
-        num_default_params = len(view_func.__defaults__)
         default_param_values = view_func.__defaults__
+
+    num_default_params = len(default_param_values)
+    num_params = view_func.__code__.co_argcount
     default_param_names = view_func.__code__.co_varnames[num_params - num_default_params:]
 
     post_params = []
