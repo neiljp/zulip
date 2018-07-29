@@ -61,35 +61,33 @@ exports.process = function (message_content) {
 
     var content = message_content.trim();
 
-    if (content === '/ping') {
-        var start_time = new Date();
+    switch (content){
+        case '/ping':
+            var start_time = new Date();
 
-        exports.send({
-            command: content,
-            on_success: function () {
-                var end_time = new Date();
-                var diff = end_time - start_time;
-                diff = Math.round(diff);
-                var msg = "ping time: " + diff + "ms";
-                exports.tell_user(msg);
-            },
-        });
-        return true;
-    }
+            exports.send({
+                command: content,
+                on_success: function () {
+                    var end_time = new Date();
+                    var diff = end_time - start_time;
+                    diff = Math.round(diff);
+                    var msg = "ping time: " + diff + "ms";
+                    exports.tell_user(msg);
+                },
+            });
+            return true;
 
-    if (content === '/day') {
-        update_setting(content);
-        return true;
-    }
+        case '/day':
+            update_setting(content);
+            return true;
 
-    if (content === '/night') {
-        update_setting(content);
-        return true;
-    }
+        case '/night':
+            update_setting(content);
+            return true;
 
-    if (content === '/settings') {
-        window.location.hash = 'settings/your-account';
-        return true;
+        case '/settings':
+            window.location.hash = 'settings/your-account';
+            return true;
     }
 
     // It is incredibly important here to return false
