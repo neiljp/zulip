@@ -2506,9 +2506,7 @@ def bulk_add_subscriptions(streams: Iterable[Stream],
     recipients_map = bulk_get_recipients(Recipient.STREAM, [stream.id for stream in streams])  # type: Mapping[int, Recipient]
     recipients = [recipient.id for recipient in recipients_map.values()]  # type: List[int]
 
-    stream_map = {}  # type: Dict[int, Stream]
-    for stream in streams:
-        stream_map[recipients_map[stream.id].id] = stream
+    stream_map = {recipients_map[stream.id].id: stream for stream in streams}  # type: Dict[int, Stream]
 
     subs_by_user = defaultdict(list)  # type: Dict[int, List[Subscription]]
     all_subs_query = get_stream_subscriptions_for_users(users).select_related('user_profile')
