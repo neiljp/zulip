@@ -2496,11 +2496,11 @@ def get_user_ids_for_streams(streams: Iterable[Stream]) -> Dict[int, List[int]]:
 
     return all_subscribers_by_stream
 
-SubT = Tuple[List[Tuple[UserProfile, Stream]], List[Tuple[UserProfile, Stream]]]
+SubsT = List[Tuple[UserProfile, Stream]]
 def bulk_add_subscriptions(streams: Iterable[Stream],
                            users: Iterable[UserProfile],
                            from_stream_creation: bool=False,
-                           acting_user: Optional[UserProfile]=None) -> SubT:
+                           acting_user: Optional[UserProfile]=None) -> Tuple[SubsT, SubsT]:
     users = list(users)
 
     recipients_map = bulk_get_recipients(Recipient.STREAM, [stream.id for stream in streams])  # type: Mapping[int, Recipient]
@@ -2515,7 +2515,7 @@ def bulk_add_subscriptions(streams: Iterable[Stream],
     for sub in all_subs_query:
         subs_by_user[sub.user_profile_id].append(sub)
 
-    already_subscribed = []  # type: List[Tuple[UserProfile, Stream]]
+    already_subscribed = []  # type: SubsT
     subs_to_activate = []  # type: List[Tuple[Subscription, Stream]]
     new_subs = []  # type: List[Tuple[UserProfile, int, Stream]]
     for user_profile in users:
@@ -2679,11 +2679,10 @@ def notify_subscriptions_removed(user_profile: UserProfile, streams: Iterable[St
                  subscriptions=payload)
     send_event(event, [user_profile.id])
 
-SubAndRemovedT = Tuple[List[Tuple[UserProfile, Stream]], List[Tuple[UserProfile, Stream]]]
 def bulk_remove_subscriptions(users: Iterable[UserProfile],
                               streams: Iterable[Stream],
                               acting_client: Client,
-                              acting_user: Optional[UserProfile]=None) -> SubAndRemovedT:
+                              acting_user: Optional[UserProfile]=None) -> Tuple[SubsT, SubsT]:
 
     users = list(users)
     streams = list(streams)
@@ -2692,10 +2691,10 @@ def bulk_remove_subscriptions(users: Iterable[UserProfile],
 
     existing_subs_by_user = get_bulk_stream_subscriber_info(users, stream_dict)
 
-    def get_non_subscribed_tups() -> List[Tuple[UserProfile, Stream]]:
+    def get_non_subscribed_tups() -> SubsT:
         stream_ids = {stream.id for stream in streams}
 
-        not_subscribed = []  # type: List[Tuple[UserProfile, Stream]]
+        not_subscribed = []  # type: SubsT
 
         for user_profile in users:
             user_sub_stream_info = existing_subs_by_user[user_profile.id]
