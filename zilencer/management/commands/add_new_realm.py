@@ -14,6 +14,7 @@ class Command(ZulipBaseCommand):
             Realm.objects.filter(string_id__startswith='realm').count(),)
         realm = do_create_realm(string_id, string_id)
         setup_initial_streams(realm)
+        assert realm.signup_notifications_stream is not None  # previous line should enforce this
 
         name = '%02d-user' % (
             UserProfile.objects.filter(email__contains='user@').count(),)
