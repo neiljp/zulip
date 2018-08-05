@@ -56,11 +56,11 @@ def remove_folder(path: str) -> None:
 # This method will be used by the mock to replace requests.get
 def mocked_requests_get(*args: List[str], **kwargs: List[str]) -> mock.Mock:
     class MockResponse:
-        def __init__(self, json_data: Dict[str, Any], status_code: int) -> None:
+        def __init__(self, json_data: Optional[Dict[str, Any]], status_code: int) -> None:
             self.json_data = json_data
             self.status_code = status_code
 
-        def json(self) -> Dict[str, Any]:
+        def json(self) -> Optional[Dict[str, Any]]:
             return self.json_data
 
     if args[0] == 'https://slack.com/api/users.list?token=valid-token':
