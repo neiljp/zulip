@@ -300,13 +300,14 @@ class EventQueue:
             self.pop()
 
     def contents(self) -> List[Dict[str, Any]]:
-        contents = []  # type: List[Dict[str, Any]]
-        virtual_id_map = {}  # type: Dict[str, Dict[str, Any]]
-        for event_type in self.virtual_events:
-            virtual_id_map[self.virtual_events[event_type]["id"]] = self.virtual_events[event_type]
+        virtual_id_map = {
+            event_type_value["id"]: event_type_value
+            for event_type_value in self.virtual_events.values()
+        }
         virtual_ids = sorted(list(virtual_id_map.keys()))
 
         # Merge the virtual events into their final place in the queue
+        contents = []  # type: List[Dict[str, Any]]
         index = 0
         length = len(virtual_ids)
         for event in self.queue:
