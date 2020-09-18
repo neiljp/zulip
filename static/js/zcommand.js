@@ -171,6 +171,40 @@ exports.process = function (message_content) {
         return true;
     }
 
+    const theme_command = "/theme"
+    if (content.startsWith(theme_command)) {
+        const theme_name_index = content.indexOf(" ", theme_command.length) + 1
+        const direct_theme_command = "/" + content.slice(theme_name_index);
+        if (night_commands.includes(direct_theme_command)) {
+            exports.enter_night_mode();
+            return true;
+        }
+        if (day_commands.includes(direct_theme_command)) {
+            exports.enter_day_mode();
+            return true;
+        }
+        // Not a valid use of command, so inform user why
+        if (theme_name_index === 0) {
+            var issue = "No theme specified";
+        }
+        else {
+            var issue = "Theme '" + direct_theme_command.slice(1) + "' does not exist";
+        }
+        const valid_theme_slash_commands = day_commands.concat(night_commands);
+        const valid_themes = [];
+        valid_theme_slash_commands.forEach(function(theme){
+            valid_themes.push(theme.slice(1));
+        });
+        const msg = issue + " (valid themes: " + valid_themes.join(", ") + ")";
+        exports.send({
+            command: "/ping",  // FIXME: Fake ping to use tell_user
+            on_success() {
+                exports.tell_user(msg);
+            },
+        });
+        return true;
+    }
+
     if (content === "/fluid-width") {
         exports.enter_fluid_mode();
         return true;
